@@ -4,10 +4,28 @@ import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import HeaderSearch from "@/src/components/otherComponents/HeaderSearch";
+import { doSignOut } from "@/src/services/auth";
+import Toast from "react-native-toast-message";
 
 function CustomDrawerContent(props: any) {
   const currentRoute =
     props.state.routeNames[props.state.index]; // active screen name
+
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      Toast.show({
+        type: "success",
+        text1: "Logged out",
+      });
+      router.replace("/(auth)/signIn");
+    } catch {
+      Toast.show({
+        type: "error",
+        text1: "Logout failed",
+      });
+    }
+  };
 
   const DrawerItem = ({
     label,
@@ -66,9 +84,11 @@ function CustomDrawerContent(props: any) {
           className="flex-row items-center"
         >
           <Ionicons name="log-out-outline" size={24} color="red" />
-          <Text className="ml-4 text-xl text-red-600 font-medium">
-            Logout
-          </Text>
+          <TouchableOpacity onPress={handleLogout} className="flex-row items-center">
+            <Text className="ml-4 text-xl text-red-600 font-medium">
+              Logout
+            </Text>
+          </TouchableOpacity>
         </TouchableOpacity>
       </View>
     </View>
@@ -82,7 +102,7 @@ export default function DrawerLayout() {
       screenOptions={{
         headerShadowVisible: false,
         headerStyle: { backgroundColor: "#fff" },
-          headerTitleContainerStyle: {
+        headerTitleContainerStyle: {
           width: "100%",
           paddingRight: 16,
           marginBottom: 10
@@ -104,7 +124,7 @@ export default function DrawerLayout() {
 
       <Drawer.Screen
         name="profile"
-        options={{ title: "Profile" }}
+        options={{ title: "Profile"}}
       />
 
       <Drawer.Screen

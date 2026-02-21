@@ -20,7 +20,8 @@ const auth = getAuth(app);
 // Firestore
 const db = getFirestore(app);
 
-export const libraryCollection = collection(db, "libraries");
-export const fileCollection = collection(db, "files");
+export const userCollectionRef = collection(db, "users");
+export const privateLibraryCollectionRef = collection(db, "libraries");
+export const fileCollectionRef = collection(db, "files");
 
 export { app, auth };

@@ -1,5 +1,5 @@
 import { auth } from "../services/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 export const doCreateUserWithEmailAndPassword = (
   email: string,
@@ -16,3 +16,11 @@ export const doSignInWithEmailAndPassword = (
 };
 
 export const doSignOut = () => auth.signOut();
+
+export const forgotPassword = async (email: string) => {
+  if (!email?.trim()) {
+    throw new Error("Please enter your email");
+  }
+
+  await sendPasswordResetEmail(auth, email.trim());
+};
